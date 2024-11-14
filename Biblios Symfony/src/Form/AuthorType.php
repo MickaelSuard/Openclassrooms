@@ -4,12 +4,20 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Editor;
+use App\Enum\BookStatus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthorType extends AbstractType
 {
@@ -40,6 +48,13 @@ class AuthorType extends AbstractType
                 'choice_label' => 'title',
                 'multiple' => true,
                 'required' => false,
+            ])
+            ->add('certification', CheckboxType::class,[
+                'mapped' => false,
+                'label' => "Je certifice de l'exactitude des informations fournies",
+                'constraints' => [
+                    new Assert\IsTrue(message : "Vous devez cocher la case pour ajouter un auteur"),
+                ],
             ])
         ;
     }
