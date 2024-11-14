@@ -10,11 +10,11 @@ enum BookStatus: string
     
     public function getLabel(): string
     {
-        // return match ($this) {
-        //     self::Available => 'Disponible',
-        //     self::Borrowed => 'Emprunté',
-        //     self::Unavailable => 'Indisponible',
-        // };
-        return $this->value;
+        return match ($this) {
+            self::Available => 'Disponible',
+            self::Borrowed => 'Emprunté',
+            self::Unavailable => 'Indisponible',
+        };
+        // return $this->value;
     }
 }
