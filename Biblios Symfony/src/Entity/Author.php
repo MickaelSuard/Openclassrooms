@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
+#[UniqueEntity(['name'])]
 class Author
 {
     #[ORM\Id]
@@ -33,10 +34,7 @@ class Author
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nationality = null;
 
-    /**
-     * @var Collection<int, book>
-     */
-    #[ORM\ManyToMany(targetEntity: book::class, inversedBy: 'authors')]
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'authors')]
     private Collection $books;
 
     public function __construct()
@@ -98,14 +96,14 @@ class Author
     }
 
     /**
-     * @return Collection<int, book>
+     * @return Collection<int, Book>
      */
     public function getBooks(): Collection
     {
         return $this->books;
     }
 
-    public function addBook(book $book): static
+    public function addBook(Book $book): static
     {
         if (!$this->books->contains($book)) {
             $this->books->add($book);
@@ -114,7 +112,7 @@ class Author
         return $this;
     }
 
-    public function removeBook(book $book): static
+    public function removeBook(Book $book): static
     {
         $this->books->removeElement($book);
 

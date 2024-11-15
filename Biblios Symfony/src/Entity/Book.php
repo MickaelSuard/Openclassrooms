@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -17,21 +18,30 @@ class Book
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Assert\Isbn(type: 'isbn13')]
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $isbn = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\Url()]
     #[ORM\Column(length: 255)]
     private ?string $cover = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column]
     private ?\DateTimeImmutable $editedAt = null;
 
+    #[Assert\Length(min: 20)]
+    #[Assert\NotBlank()]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $plot = null;
 
+    #[Assert\Type(type: 'integer')]
     #[ORM\Column]
     private ?int $pageNumber = null;
 
@@ -45,7 +55,7 @@ class Book
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'book', orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\ManyToMany(targetEntity: Author::class, mappedBy: 'books')]
+    #[ORM\ManyToMany(targetEntity: Author::class, mappedBy: 'books', cascade: ['persist'])]
     private Collection $authors;
 
     public function __construct()
