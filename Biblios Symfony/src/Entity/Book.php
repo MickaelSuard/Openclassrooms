@@ -59,7 +59,7 @@ class Book
     private Collection $authors;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $createdBy = null;
 
     public function __construct()
