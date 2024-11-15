@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'createdBy')]
     private Collection $books;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastConnectedAt = null;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -206,6 +209,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $book->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastConnectedAt(): ?\DateTimeImmutable
+    {
+        return $this->lastConnectedAt;
+    }
+
+    public function setLastConnectedAt(?\DateTimeImmutable $lastConnectedAt): static
+    {
+        $this->lastConnectedAt = $lastConnectedAt;
 
         return $this;
     }
